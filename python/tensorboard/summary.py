@@ -164,7 +164,10 @@ def make_image(tensor):
     """Convert an numpy representation image to Image protobuf"""
     from PIL import Image
     height, width, channel = tensor.shape
-    image = Image.fromarray(tensor)
+    if channel == 1:
+        image = Image.fromarray(tensor.reshape(height, width))
+    else:
+        image = Image.fromarray(tensor)
     import io
     output = io.BytesIO()
     image.save(output, format='PNG')
